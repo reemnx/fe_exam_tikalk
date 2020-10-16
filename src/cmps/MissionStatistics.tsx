@@ -5,7 +5,7 @@ import {
   Mission,
   ascendingOrder,
   oppositeMissions,
-  getIsolatedCountry 
+  getIsolatedCountry,
 } from "../services/missionsService";
 
 export const MissionStatistics = () => {
@@ -13,11 +13,11 @@ export const MissionStatistics = () => {
   const [farthestMission, setFarthest] = useState<Mission | null>(null);
   const [closestMission, setclosest] = useState<Mission | null>(null);
   const [isLoaderShown, toggleLoader] = useState<boolean>(false);
-  const [mostIsolatedCountry, setIsolatedCountry] = useState<string>('')
+  const [mostIsolatedCountry, setIsolatedCountry] = useState<string>("");
 
   useEffect(() => {
-    setIsolatedCountry(getIsolatedCountry())
-    toggleLoader(true)
+    setIsolatedCountry(getIsolatedCountry());
+    toggleLoader(true);
     ascendingOrder();
     setMissions(missions);
   }, []);
@@ -28,7 +28,7 @@ export const MissionStatistics = () => {
     if (!missionList.length) return;
     const getMinMaxMissions = async () => {
       const minMax = await oppositeMissions(missionList);
-      toggleLoader(false)
+      toggleLoader(false);
       setFarthest(minMax.farthest);
       setclosest(minMax.closest);
     };
@@ -80,7 +80,10 @@ export const MissionStatistics = () => {
           );
         })}
         <div className="dash-footer text-end flex align-center">
-          <h5>Most Isolated Country: {mostIsolatedCountry} ,{missionList.length} Missions</h5>
+          <h5>
+            Most Isolated Country: {mostIsolatedCountry} ,{missionList.length}{" "}
+            Missions
+          </h5>
         </div>
       </div>
       {isLoaderShown && <LoaderModal />}

@@ -51,9 +51,12 @@
     .dash-footer{
         width: 100%;
         background-color: rgb(202, 202, 202);
-        padding: 10px 25px;
+        padding: 10px 20px;
         & h5{
             margin-left: auto;
+        }
+        & span {
+            color: orangered;
         }
     }
 }

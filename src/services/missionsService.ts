@@ -1,5 +1,5 @@
 import localDB from '../db.json'
-import { getDistances } from "../services/geoService";
+import { getDistances } from "./geoService";
 const ORIGIN_ADDRESS: string = "10 Downing st. London";
 
 export interface Mission {
@@ -13,7 +13,6 @@ export interface Mission {
 interface Country {
     country: string,
     isolatedAgents:number
-    
 }
 
 export const missions: Mission[] = localDB.missions
@@ -31,6 +30,7 @@ const _setCountries = () => {
         let idx = countries.findIndex(obj => obj.country === mission.country)
         if(idx === -1) countries.push({country: mission.country ,isolatedAgents: 0})
     })
+    _setAgents()
 }
 
 const _setAgents = () => {
@@ -40,14 +40,13 @@ const _setAgents = () => {
             countries[countryIdx].isolatedAgents += 1;
         }
     })
+    countries.sort(function(a, b) {
+        return b.isolatedAgents - a.isolatedAgents;
+    });
 }
 
 export const getIsolatedCountry = () => {
     _setCountries()
-    _setAgents()
-    countries.sort(function(a, b) {
-        return b.isolatedAgents - a.isolatedAgents;
-    });
     return countries[0].country
 }
 
@@ -62,7 +61,7 @@ export const ascendingOrder = () => {
     });
 }
 
-export const oppositeMissions = async (missionList:any) => {
+export const closestFarthestFromOrigin = async (missionList:any) => {
     let currFarthest: Mission | null = null;
     let currClosest: Mission | null = null;
     let idx: number = 0;

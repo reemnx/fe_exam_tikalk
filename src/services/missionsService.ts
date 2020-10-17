@@ -61,7 +61,7 @@ export const ascendingOrder = () => {
     });
 }
 
-export const closestFarthestFromOrigin = async (missionList:any) => {
+export const closestFarthestFromOrigin = async (missionList: Mission[]) => {
     let currFarthest: Mission | null = null;
     let currClosest: Mission | null = null;
     let idx: number = 0;

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Props {
-  isolatedCountry: string;
+  isolatedCountry?: string;
   missionsLength?: number | null | undefined;
 }
 

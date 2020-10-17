@@ -12,35 +12,32 @@ import {
 } from "../../services/missionsService";
 
 interface MissionState {
-  missionList: Mission[] | null;
+  missions: Mission[] ;
   farthestMission: Mission | null;
   closestMission: Mission | null;
-  isolatedCountry: string;
+  isolatedCountry?: string;
 }
 
 export const MissionStatistics = () => {
   const [isLoaderShown, toggleLoader] = useState<boolean>(false);
   const [missionState, setMissionState] = useState<MissionState>({
-    missionList: null,
+    missions: missions,
     farthestMission: null,
     closestMission: null,
-    isolatedCountry: "",
   });
 
   useEffect(() => {
     toggleLoader(true);
     setMissionState((prevState) => ({
       ...prevState,
-      isolatedCountry: getIsolatedCountry(),
-      missionList: missions,
+      isolatedCountry: getIsolatedCountry()
     }));
     ascendingOrder();
   }, []);
 
   useEffect(() => {
-    if (!missionState.missionList?.length) return;
     const getClosestFarthestMissions = async () => {
-      const res = await closestFarthestFromOrigin(missionState.missionList);
+      const res = await closestFarthestFromOrigin(missionState.missions);
       setMissionState((prevState) => ({
         ...prevState,
         farthestMission: res.farthest,
@@ -48,21 +45,23 @@ export const MissionStatistics = () => {
       }));
       toggleLoader(false);
     };
-    getClosestFarthestMissions();
-  }, [missionState.missionList]);
+    if (missionState.missions?.length){
+      getClosestFarthestMissions();
+    }
+  }, [missionState.missions]);
 
   return (
     <>
       <div className="missions-stats-container flex column space-between">
         <MissionsStatsHeader />
         <MissionStatsContent
-          missions={missionState.missionList}
+          missions={missionState.missions}
           closestMission={missionState.closestMission}
           farthestMission={missionState.farthestMission}
         />
         <MissionStatsFooter
           isolatedCountry={missionState.isolatedCountry}
-          missionsLength={missionState.missionList?.length}
+          missionsLength={missionState.missions?.length}
         />
       </div>
       {isLoaderShown && <LoaderModal />}
